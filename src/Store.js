@@ -7,9 +7,6 @@ const initialState = {
 	weather: {},
 	forecast: {},
 	hasLocation: false,
-	hasWeather: false,
-	hasForecast: false,
-	hasHourly: false,
 	message: ""
 }
 

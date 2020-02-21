@@ -13,15 +13,15 @@ export default function App(){
 
 		dispatch({
 			type: 'SET_MESSAGE',
-			payload: "Welcome to Stratus."
+			payload: "Getting your location."
 		});
 
-		return new Promise(function(resolve, reject) {
+		return new Promise((resolve, reject) => {
 			const data = getLocation();
 			resolve(data);
 			return data;
 		})
-		.then(function(result) {
+		.then(result => {
 			dispatch({
 				type: 'SET_MESSAGE',
 				payload: ""
@@ -30,13 +30,19 @@ export default function App(){
 			const data = getWeather(result);
 			return data;
 		})
-		.then(function(result) {
+		.then(result => {
 			const data = getForecast(result);
 			return data;
 		})
-		.then(function(result) {
+		.then(result => {
 			const data = getHourly(result);
 			return data;
+		})
+		.catch(error => {
+			dispatch({
+				type: 'SET_MESSAGE',
+				payload: error
+			});
 		});
 
 		function getLocation(){
@@ -54,12 +60,8 @@ export default function App(){
 					});
 
 					resolve(location.coords);
-				}, (error) => {
-					dispatch({
-						type: 'SET_MESSAGE',
-						payload: error.code
-					});
-					reject(error.code);
+				}, () => {
+					reject("Please enable location in your browser.");
 				});
 			});
 		}
@@ -86,8 +88,8 @@ export default function App(){
 
 						resolve(response.data.properties);
 					})
-					.catch(error => {
-						reject(error);
+					.catch(() => {
+						reject("The National Weather Service could not be reached.");
 					});
 
 			});
@@ -111,8 +113,8 @@ export default function App(){
 							"NWS": NWSdata
 						});
 					})
-					.catch(error => {
-						reject(error);
+					.catch(() => {
+						reject("Forecast data could not be reached.");
 					});
 			});
 		}
@@ -130,8 +132,8 @@ export default function App(){
 
 						resolve(response.data.properties);
 					})
-					.catch(error => {
-						reject(error);
+					.catch(() => {
+						reject("Hourly forecast data could not be reached.");
 					});
 			})
 		}
@@ -164,7 +166,8 @@ export default function App(){
 		return (
 			<div className="notification">
 				<div className="notification-content">
-					{ state.message }
+					<header>Welcome to Stratus</header>
+					<p>{ state.message }</p>
 				</div>
 			</div>
 		)
