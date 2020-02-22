@@ -2,6 +2,7 @@ import React from "react";
 import { Store } from "./Store";
 import axios from "axios";
 
+import Heading from "./compontents/heading";
 import Forecast from "./compontents/forecast";
 import Current from "./compontents/current";
 import Hourly from "./compontents/hourly";
@@ -146,15 +147,9 @@ export default function App(){
 
 	
 	if(Object.entries(state.weather).length > 0){
-		const loc = state.weather.relativeLocation.properties;
-
 		return (
-			
 			<React.Fragment>
-				
-				<header className="app-header">
-					<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
-				</header>
+				<Heading />
 				<main className="data-grid">
 					<Current />
 					<Hourly />
