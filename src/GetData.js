@@ -1,14 +1,8 @@
-import React from "react";
-//import { Store } from "./Store";
 import axios from "axios";
 
+export const GetData = async (dispatch) => {
 
-
-export const GetData = async () => {
-
-	//const { React.dispatch } = React.useContext(Store);
-
-	React.dispatch({
+	dispatch({
 		type: 'SET_MESSAGE',
 		payload: "Getting your location."
 	});
@@ -18,67 +12,64 @@ export const GetData = async () => {
 		resolve(data);
 		return data;
 	})
-	.then(result => {
-		React.dispatch({
-			type: 'SET_MESSAGE',
-			payload: ""
+		.then(result => {
+			dispatch({
+				type: 'SET_MESSAGE',
+				payload: ""
+			});
+
+			const data = getWeather(result);
+			return data;
+		})
+		.then(result => {
+			const data = getForecast(result);
+			return data;
+		})
+		.then(result => {
+			const data = getHourly(result);
+			return data;
+		})
+		.catch(error => {
+			dispatch({
+				type: 'SET_MESSAGE',
+				payload: error
+			});
 		});
 
-		const data = getWeather(result);
-		return data;
-	})
-	.then(result => {
-		const data = getForecast(result);
-		return data;
-	})
-	.then(result => {
-		const data = getHourly(result);
-		return data;
-	})
-	.catch(error => {
-		React.dispatch({
-			type: 'SET_MESSAGE',
-			payload: error
-		});
-	});
-
-	function getLocation(){
+	function getLocation() {
 		return new Promise((resolve, reject) => {
 			navigator.geolocation.getCurrentPosition((location) => {
 
-				React.dispatch({
-					type: 'SET_LOCATION',
-					payload: true
-				});
+				let lat = location.coords.latitude.toFixed(4);
+				let long = location.coords.longitude.toFixed(4);
 
-				React.dispatch({
+				const newCoords = lat + ',' + long;
+
+				dispatch({
 					type: 'SET_MESSAGE',
 					payload: "Getting location."
 				});
 
-				resolve(location.coords);
+				resolve(newCoords);
 			}, () => {
 				reject("Please enable location in your browser.");
 			});
 		});
 	}
 
-	function getWeather(value){
+	function getWeather(value) {
 		// this gets all endpoints from a location based on the passed in coordinates
 
 		return new Promise((resolve, reject) => {
-			React.dispatch({
+			dispatch({
 				type: 'SET_MESSAGE',
 				payload: "Getting data from the National Weather Service."
 			});
 
-			let lat = value.latitude.toFixed(4);
-			let long = value.longitude.toFixed(4);
-
-			axios.get('https://api.weather.gov/points/' + lat + ',' + long)
+			axios.get('https://api.weather.gov/points/' + value)
 				.then(response => {
 
-					React.dispatch({
+					dispatch({
 						type: 'SET_WEATHER',
 						payload: response.data.properties
 					});
@@ -93,20 +84,20 @@ export const GetData = async () => {
 	}
 
 	// get forecast data
-	function getForecast(NWSdata){
+	function getForecast(NWSdata) {
 		//console.log(NWSdata);
 
 		return new Promise((resolve, reject) => {
 			axios.get(NWSdata.forecast)
 				.then(response => {
 
-					React.dispatch({
+					dispatch({
 						type: 'SET_FORECAST',
 						payload: response.data.properties
 					});
 
 					resolve({
-						"forecast": response.data.properties, 
+						"forecast": response.data.properties,
 						"NWS": NWSdata
 					});
 				})
@@ -116,13 +107,13 @@ export const GetData = async () => {
 		});
 	}
 
-	function getHourly(value){
+	function getHourly(value) {
 
 		return new Promise((resolve, reject) => {
 			axios.get(value.NWS.forecastHourly)
 				.then(response => {
 
-					React.dispatch({
+					dispatch({
 						type: 'SET_HOURLY',
 						payload: response.data.properties
 					});

@@ -3,6 +3,7 @@ import React from 'react';
 export const Store = React.createContext();
 
 const initialState = {
+	coords: "",
 	hourly: {},
 	weather: {},
 	forecast: {},
@@ -15,8 +16,8 @@ function reducer(state, action) {
 	switch (action.type) {
 		case 'SET_MESSAGE':
 			return { ...state, message: action.payload }
-		case 'SET_LOCATION':
-			return { ...state, hasLocation: action.payload }
+		case 'SET_COORDS':
+			return { ...state, coords: action.payload }
 		case 'SET_WEATHER':
 			return { ...state, weather: action.payload }
 		case 'SET_FORECAST':
@@ -36,7 +37,7 @@ export function getTime(data) {
 	});
 }
 
-export function StoreProvider(props){
+export function StoreProvider(props) {
 	const [state, dispatch] = React.useReducer(reducer, initialState);
 	const value = { state, dispatch };
 
