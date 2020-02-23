@@ -11,8 +11,8 @@ export default function App() {
 	const { dispatch, state } = React.useContext(Store);
 
 	const fetchDataAction = React.useCallback(() => {
-		return GetData(dispatch);
-	}, [dispatch]);
+		return GetData(dispatch, state.coords);
+	}, [dispatch, state.coords]);
 
 	React.useEffect(() => {
 		fetchDataAction();

@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export const GetData = async (dispatch) => {
+export const GetData = async (dispatch, coords) => {
+
+	console.log(coords);
 
 	dispatch({
 		type: 'SET_MESSAGE',
@@ -8,9 +10,14 @@ export const GetData = async (dispatch) => {
 	});
 
 	return new Promise((resolve, reject) => {
-		const data = getLocation();
-		resolve(data);
-		return data;
+		if (coords === '') {
+			const data = getLocation();
+			resolve(data);
+			return data;
+		} else {
+			resolve(coords);
+			return coords;
+		}
 	})
 		.then(result => {
 			dispatch({
