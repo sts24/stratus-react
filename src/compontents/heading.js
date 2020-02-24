@@ -65,7 +65,7 @@ const Heading = () => {
 	}
 
 	function SearchWaiting(){
-		return <li>Searching...</li>
+		return <li><div className="search-select">Searching...</div></li>
 	}
 
 	if (Object.entries(state.weather).length > 0) {
@@ -75,8 +75,7 @@ const Heading = () => {
 			<header className="app-header">
 				<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
 				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" />
-			
-				{ searchResults.results.length > 0 &&
+
 				<ul className="search-results">
 					{ searchResults.active === true ?
 						<SearchWaiting />
@@ -84,7 +83,7 @@ const Heading = () => {
 						<SearchResultListItems resultsList={searchResults} />
 					}
 				</ul>
-				}
+				
 
 			</header>
 		)

@@ -84,12 +84,12 @@ h2 {
 	width: 100%;
 	padding: 0.5rem 1rem;
 	text-align: left;
-	cursor: pointer;
 	color: var(--text);
+	cursor: pointer;
 
 	font-size: 1.25em;
 	font-weight: bold;
-
+	
 	&:hover, &:focus {
 		background-color: var(--highlight);
 		color: white;
