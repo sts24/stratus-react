@@ -2,7 +2,10 @@ import axios from "axios";
 
 export const GetData = async (dispatch, coords) => {
 
-	console.log(coords);
+	dispatch({
+		type: 'RESET_STATE',
+		payload: "Getting your location."
+	});
 
 	dispatch({
 		type: 'SET_MESSAGE',

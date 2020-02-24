@@ -14,6 +14,8 @@ const initialState = {
 function reducer(state, action) {
 
 	switch (action.type) {
+		case 'RESET_STATE':
+			return { ...state, hourly: {}, weather: {}, forecast: {} }
 		case 'SET_MESSAGE':
 			return { ...state, message: action.payload }
 		case 'SET_COORDS':
