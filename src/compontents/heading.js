@@ -12,13 +12,21 @@ const Heading = () => {
 	const makeSearch = (e) => {
 		e.preventDefault();
 
-		if (e.target.value.length > 3) {
+		console.log(e.target.value.length);
+
+		if (e.target.value.length >= 3) {
+			console.log('searched');
 			const searchValue = e.target.value;
 
 			axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + searchValue + '&key=3d5358bd0ebe4d35a5ebf97a2322d2c7&language=en&pretty=0&roadinfo=0&countrycode=us&no_annotations=1&limit=100')
 				.then(response => {
 					setSearchResult(response.data.results);
 				});
+		}
+
+		else if(e.target.value === ''){
+			console.log('cleared');
+			setSearchResult([]);
 		}
 	}
 
@@ -42,13 +50,15 @@ const Heading = () => {
 			<header className="app-header">
 				<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
 
-				<input type="search" onChange={makeSearch} className="city-search" />
+				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" />
 
+				{ searchResults.length > 0 &&
 				<ul className="search-results">
 					{searchResults.map((item, index) => {
 						return <li key={index}><button className="search-select" data-index={index} onClick={selectResult}>{item.formatted}</button></li>
 					})}
 				</ul>
+				}
 
 			</header>
 		)
