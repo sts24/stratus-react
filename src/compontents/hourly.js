@@ -5,14 +5,13 @@ import Loading from "./loading";
 export default function Hourly() {
 
 	const { state } = React.useContext(Store);
+	const hourlyCond = Object.entries(state.hourly).length > 0 ? state.hourly.periods : [];
 
+	return (
+		<div className="grid-col grid-hourly">
+			<h2>Next 12 Hours</h2>
 
-	if(Object.entries(state.hourly).length > 0){
-		const hourlyCond = state.hourly.periods;
-
-		return (
-			<div className="grid-col grid-hourly">
-				<h2>Next 12 Hours</h2>
+			{ Object.entries(state.hourly).length > 0 ?
 				<ul className="hourly-list">
 					{hourlyCond.slice(1, 13).map(item => {
 						let daytimeClass = item.isDaytime ? `forecast-daytime` : `forecast-nighttime`;
@@ -28,10 +27,11 @@ export default function Hourly() {
 
 					})}
 				</ul>
-			</div>
-		)
-	} else {
-		return <Loading text="Hourly Forecast" />
-	}
+			:
+				<Loading text="Hourly Forecast" />
+			}
+		</div>
+	)
+	
 
 }

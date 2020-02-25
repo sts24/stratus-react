@@ -6,10 +6,12 @@ export const Forecast = () => {
 
 	const { state } = React.useContext(Store);
 
-	if(Object.entries(state.forecast).length > 0){
-		return (
-			<div className="grid-col grid-forecast">
-				<h2>Extended Forecast</h2>
+	return (
+		<div className="grid-col grid-forecast">
+			<h2>Extended Forecast</h2>
+
+			{ Object.entries(state.forecast).length > 0 ?
+
 				<ul className="forecast-list">
 					{state.forecast.periods.map((item, index) => {
 						let daytimeClass = item.isDaytime ? `forecast-daytime` : `forecast-nighttime`;
@@ -26,11 +28,13 @@ export const Forecast = () => {
 
 					})}
 				</ul>
-			</div>
-		)
-	} else {
-		return <Loading text="Extended Forecast" />
-	}
+
+			:
+				<Loading text="Extended Forecast" />
+				}
+		</div>
+	)
+	
 
 }
 
