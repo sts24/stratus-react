@@ -7,10 +7,28 @@ const Heading = () => {
 
 	const { state, dispatch } = React.useContext(Store);
 
+	// local state for search results
 	const [searchResults, setSearchResult] = React.useState({
 		"results": [],
 		"active": false
 	});
+
+	// local state for recent searches
+	const [recentSearches, setRecentSearch] = React.useState({});
+
+
+	// get data from browser's localstorage of recent searches
+	const getSavedSearches = (e) => {
+		e.preventDefault();
+		if(window.localStorage.length > 0){
+			const savedSearches = {...window.localStorage};
+			setRecentSearch(savedSearches);
+		}
+	}
+
+
+
+	// search city API on input change and return coords
 
 	const makeSearch = (e) => {
 		e.preventDefault();
@@ -41,15 +59,23 @@ const Heading = () => {
 		}
 	}
 
+
+	// select city and get weather data
+
 	function selectResult(e) {
 		e.preventDefault();
 		const resultIndex = e.target.dataset.index;
-		const newCoords = searchResults.results[resultIndex].geometry.lat + ',' + searchResults.results[resultIndex].geometry.lng;
+		const selectedResult = searchResults.results[resultIndex];
+		const newCoords = selectedResult.geometry.lat + ',' + selectedResult.geometry.lng;
+		
+		let cityID = selectedResult.geometry.lat +'-'+ selectedResult.geometry.lng;
 
 		dispatch({
 			type: 'SET_COORDS',
 			payload: newCoords
 		});
+
+		window.localStorage.setItem(cityID, JSON.stringify({ "name": selectedResult.formatted, "coords": newCoords}));
 
 		setSearchResult({ 
 			"results": [],
@@ -58,15 +84,26 @@ const Heading = () => {
 	}
 
 
+
+
+
 	function SearchResultListItems(props){
 		return props.resultsList.results.map((item, index) => {
 			return <li key={index}><button className="search-select" data-index={index} onClick={selectResult}>{item.formatted}</button></li>
 		});
 	}
 
+	function RecentSearchListItems(props){
+		for(let i in props.recent){
+			let item = JSON.parse(props.recent[i]);
+			return <li><button className="search-select" onClick={selectResult}>{item.name}</button></li>
+		}
+	}
+
 	function SearchWaiting(){
 		return <li><div className="search-select">Searching...</div></li>
 	}
+
 
 	if (Object.entries(state.weather).length > 0) {
 		const loc = state.weather.relativeLocation.properties;
@@ -74,9 +111,14 @@ const Heading = () => {
 		return (
 			<header className="app-header">
 				<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
-				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" />
+				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={getSavedSearches} />
 
 				<ul className="search-results">
+					
+					{ Object.entries(recentSearches).length > 0 &&
+						<RecentSearchListItems recent={recentSearches} />
+					}
+
 					{ searchResults.active === true ?
 						<SearchWaiting />
 					:
