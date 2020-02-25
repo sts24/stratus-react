@@ -14,16 +14,26 @@ const Heading = () => {
 	});
 
 	// local state for recent searches
-	const [recentSearches, setRecentSearch] = React.useState({});
+	const [recentSearches, setRecentSearch] = React.useState([]);
 
 
 	// get data from browser's localstorage of recent searches
 	const getSavedSearches = (e) => {
 		e.preventDefault();
 		if(window.localStorage.length > 0){
-			const savedSearches = {...window.localStorage};
+			let savedSearches = [];
+			Object.keys(window.localStorage).forEach((key, index) => {
+				savedSearches[index] = JSON.parse(window.localStorage[key]);
+				savedSearches[index]['id'] = key;
+			});
 			setRecentSearch(savedSearches);
 		}
+	}
+
+	const hideSavedSearches = (e) => {
+		e.preventDefault();
+
+		setRecentSearch([]);
 	}
 
 
@@ -94,10 +104,12 @@ const Heading = () => {
 	}
 
 	function RecentSearchListItems(props){
-		for(let i in props.recent){
-			let item = JSON.parse(props.recent[i]);
-			return <li><button className="search-select" onClick={selectResult}>{item.name}</button></li>
-		}
+		const savedItems = props.recent;
+		
+		return savedItems.map((item) => {
+		return <li key={item.id}><button className="search-select">{item.name}</button></li>
+		});
+
 	}
 
 	function SearchWaiting(){
@@ -111,12 +123,13 @@ const Heading = () => {
 		return (
 			<header className="app-header">
 				<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
-				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={getSavedSearches} />
+				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={getSavedSearches} onBlur={hideSavedSearches} />
 
 				<ul className="search-results">
 					
-					{ Object.entries(recentSearches).length > 0 &&
+					{ Object.entries(recentSearches).length > 0 && searchResults.results.length == 0 ?
 						<RecentSearchListItems recent={recentSearches} />
+						: null
 					}
 
 					{ searchResults.active === true ?
