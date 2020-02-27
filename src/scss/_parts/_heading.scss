@@ -42,14 +42,20 @@ h2 {
 	border: 0.5rem solid var(--subtle-accent);
 	border-radius: 0;
 	padding: 0.5rem;
+	appearance: none;
+	width: 100%;
 
 	&:focus {
 		outline: 0;
 		border-color: var(--highlight);
 	}
 
-	&:palceholder {
+	&:placeholder {
 		color: var(--subtle-accent);
+	}
+
+	@media (min-width: 768px){
+		max-width: 300px;
 	}
 }
 
@@ -58,11 +64,11 @@ h2 {
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	max-width: 50%;
+	max-width: 100%;
 	position: absolute;
 	z-index: 1000;
 	overflow: scroll;
-	max-height: 50vh;
+	max-height: 80vh;
 
 	> li {
 		background: var(--bg);
@@ -70,10 +76,16 @@ h2 {
 		margin: 0;
 		border: 0.5rem solid var(--text);
 		border-bottom: 0;
+		display: flex;
 
 		&:last-child {
 			border-bottom: 0.5rem solid var(--text);
 		}
+	}
+
+	@media (min-width: 768px){
+		max-height: 50vh;
+		max-width: 50%;
 	}
 }
 
@@ -93,5 +105,19 @@ h2 {
 	&:hover, &:focus {
 		background-color: var(--highlight);
 		color: white;
+	}
+}
+
+.search-clear {
+	background: var(--subtle-accent);
+	border: 0;
+	display: block;
+	color: var(--text);
+	cursor: pointer;
+	font-size: 2em;
+
+	&:hover, &:focus {
+		background: var(--highlight);
+		color: var(--bg);
 	}
 }

@@ -5,6 +5,7 @@ import axios from "axios";
 
 const Heading = () => {
 
+	// global state stuff
 	const { state, dispatch } = React.useContext(Store);
 
 	// local state for search results
@@ -15,7 +16,6 @@ const Heading = () => {
 
 	// local state for recent searches
 	const [recentSearches, setRecentSearch] = React.useState([]);
-
 
 	// get data from browser's localstorage of recent searches
 	const getSavedSearches = (e) => {
@@ -30,16 +30,8 @@ const Heading = () => {
 		}
 	}
 
-	const hideSavedSearches = (e) => {
-		e.preventDefault();
-
-		setRecentSearch([]);
-	}
-
-
 
 	// search city API on input change and return coords
-
 	const makeSearch = (e) => {
 		e.preventDefault();
 
@@ -71,21 +63,23 @@ const Heading = () => {
 
 
 	// select city and get weather data
-
 	function selectResult(e) {
 		e.preventDefault();
-		const resultIndex = e.target.dataset.index;
-		const selectedResult = searchResults.results[resultIndex];
-		const newCoords = selectedResult.geometry.lat + ',' + selectedResult.geometry.lng;
-		
-		let cityID = selectedResult.geometry.lat +'-'+ selectedResult.geometry.lng;
+
+		const newCoords = e.target.dataset.coords;
+		const newName = e.target.innerText;
+
+		console.log(newCoords);
 
 		dispatch({
 			type: 'SET_COORDS',
 			payload: newCoords
 		});
 
-		window.localStorage.setItem(cityID, JSON.stringify({ "name": selectedResult.formatted, "coords": newCoords}));
+		window.localStorage.setItem(newCoords, JSON.stringify({ 
+			"name": newName,
+			"coords": newCoords
+		}));
 
 		setSearchResult({ 
 			"results": [],
@@ -93,27 +87,33 @@ const Heading = () => {
 		});
 	}
 
+	// remove a saved search item
+	function removeSavedSearch(e) {
+		e.preventDefault();
 
+		const coords = e.target.dataset.coords;
+		let updatedRecentSearches = [...recentSearches];
 
+		for( var i = 0; i < updatedRecentSearches.length; i++){ 
+			if ( updatedRecentSearches[i].coords === coords) {
+				updatedRecentSearches.splice(i, 1); 
+			}
+		}
 
+		console.log(updatedRecentSearches);
 
-	function SearchResultListItems(props){
-		return props.resultsList.results.map((item, index) => {
-			return <li key={index}><button className="search-select" data-index={index} onClick={selectResult}>{item.formatted}</button></li>
-		});
+		localStorage.removeItem(coords);
+		setRecentSearch(updatedRecentSearches);
 	}
 
-	function RecentSearchListItems(props){
-		const savedItems = props.recent;
-		
-		return savedItems.map((item) => {
-		return <li key={item.id}><button className="search-select">{item.name}</button></li>
-		});
 
-	}
-
-	function SearchWaiting(){
-		return <li><div className="search-select">Searching...</div></li>
+	function SearchListItem(props){
+		return (
+			<li>
+				<button className="search-select" data-coords={props.item.coords} onClick={selectResult}>{props.item.name}</button>
+				{props.children}
+			</li>
+		)
 	}
 
 
@@ -123,19 +123,29 @@ const Heading = () => {
 		return (
 			<header className="app-header">
 				<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
-				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={getSavedSearches} onBlur={hideSavedSearches} />
+				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={getSavedSearches} />
 
 				<ul className="search-results">
 					
-					{ Object.entries(recentSearches).length > 0 && searchResults.results.length == 0 ?
-						<RecentSearchListItems recent={recentSearches} />
-						: null
+					{ recentSearches.length > 0 &&
+						recentSearches.map((item, index) => {
+							return (
+								<SearchListItem key={'recent-'+index} item={item}>
+									<button className="search-clear" data-index={index} data-coords={item.coords} onClick={removeSavedSearch}>𝘅</button>
+								</SearchListItem>
+							)
+						})
 					}
 
-					{ searchResults.active === true ?
-						<SearchWaiting />
-					:
-						<SearchResultListItems resultsList={searchResults} />
+					{ searchResults.results.length > 0 &&
+						searchResults.results.map((item,index) => {
+							let formattedResult = {
+								name: item.formatted,
+								coords: item.geometry.lat+','+item.geometry.lng
+							}
+
+							return <SearchListItem key={'result-'+index} item={formattedResult} />
+						})
 					}
 				</ul>
 				
