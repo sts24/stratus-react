@@ -1,0 +1,11 @@
+.alert-box {
+	border: 0.5rem solid var(--highlight);
+	margin: 2rem 0;
+	padding: 1rem;
+
+	> h3 {
+		font-size: 1.25em;
+		margin: 0 0 1rem 0;
+		color: var(--highlight);
+	}
+}

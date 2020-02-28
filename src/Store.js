@@ -7,6 +7,7 @@ const initialState = {
 	hourly: {},
 	weather: {},
 	forecast: {},
+	alerts: {},
 	hasLocation: false,
 	message: ""
 }
@@ -26,6 +27,8 @@ function reducer(state, action) {
 			return { ...state, forecast: action.payload }
 		case 'SET_HOURLY':
 			return { ...state, hourly: action.payload }
+		case 'SET_ALERTS':
+			return { ...state, alerts: action.payload }
 		default:
 			return state;
 	}

@@ -39,6 +39,10 @@ export const GetData = async (dispatch, coords) => {
 			const data = getHourly(result);
 			return data;
 		})
+		.then(result => {
+			const data = getAlerts(result);
+			return data;
+		})
 		.catch(error => {
 			dispatch({
 				type: 'SET_MESSAGE',
@@ -95,7 +99,6 @@ export const GetData = async (dispatch, coords) => {
 
 	// get forecast data
 	function getForecast(NWSdata) {
-		//console.log(NWSdata);
 
 		return new Promise((resolve, reject) => {
 			axios.get(NWSdata.forecast)
@@ -112,6 +115,10 @@ export const GetData = async (dispatch, coords) => {
 					});
 				})
 				.catch(() => {
+					resolve({
+						"NWS": NWSdata
+					});
+
 					reject("Forecast data could not be reached.");
 				});
 		});
@@ -128,12 +135,41 @@ export const GetData = async (dispatch, coords) => {
 						payload: response.data.properties
 					});
 
-					resolve(response.data.properties);
+					resolve({
+						"hourly": response.data.properties,
+						"NWS": value.NWS
+					});
 				})
 				.catch(() => {
+					resolve({
+						"NWS": value.NWS
+					});
 					reject("Hourly forecast data could not be reached.");
 				});
 		})
+	}
+
+
+	function getAlerts(value){
+		const forecastZone = value.NWS.forecastZone.split('/');
+		const zoneID = forecastZone[forecastZone.length - 1];
+
+		return new Promise((resolve, reject) => {
+			axios.get('https://api.weather.gov/alerts/active/zone/'+zoneID)
+				.then(response => {
+
+					dispatch({
+						type: 'SET_ALERTS',
+						payload: response.data.features
+					});
+
+					resolve(response.data);
+				})
+				.catch(() => {
+					reject("Area alerts could not be reached.");
+				});
+		})
+
 	}
 }
 
