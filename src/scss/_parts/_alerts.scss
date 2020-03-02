@@ -9,3 +9,11 @@
 		color: var(--highlight);
 	}
 }
+
+.alert-box-content {
+	display: none;
+
+	&.alert-box-content-open {
+		display: block;
+	}
+}

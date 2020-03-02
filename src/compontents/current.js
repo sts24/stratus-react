@@ -1,25 +1,12 @@
 import React from "react";
 import { Store } from '../Store';
 import Loading from "./loading";
-
+import Alert from "./alert";
 
 export const Current = () => {
 
 	const { state } = React.useContext(Store);
 	const currentCond = Object.entries(state.hourly).length > 0 ? state.hourly.periods[0] : [];
-
-	const formattedTime = (rawTime) => {
-		let newDate = new Date(rawTime);
-
-		return newDate.toLocaleTimeString([], {
-			weekday: 'long',
-			day: 'numeric',
-			month: 'long',
-			year: 'numeric',
-			hour: 'numeric',
-			minutes: 'numeric'
-		});
-	};
 
 	return (
 		<div className="grid-col grid-current">
@@ -38,16 +25,7 @@ export const Current = () => {
 
 			{ state.alerts.length > 0 ?
 				state.alerts.map((alert, index) => {
-					return (
-						<section key={index} className="alert-box">
-							<h3>{alert.properties.event}</h3>
-							<p><strong>Areas Affected:</strong> {alert.properties.areaDesc}</p>
-							<p><strong>Effective:</strong> {formattedTime(alert.properties.effective)}</p>
-							<p><strong>Expires:</strong> {formattedTime(alert.properties.expires)}</p>
-							<p>{alert.properties.description}</p>
-							<p>{alert.properties.instruction}</p>
-						</section>
-					)
+					return <Alert key={index} alert={alert} />
 				})
 			: null }
 		</div>
