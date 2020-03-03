@@ -7,6 +7,8 @@ import Forecast from "./compontents/forecast";
 import Current from "./compontents/current";
 import Hourly from "./compontents/hourly";
 
+import { ReactComponent as SVGsprite } from "./assets/icon-sprite.svg";
+
 export default function App() {
 	const { dispatch, state } = React.useContext(Store);
 
@@ -22,6 +24,7 @@ export default function App() {
 	if (Object.entries(state.weather).length > 0) {
 		return (
 			<React.Fragment>
+				<SVGsprite />
 				<Heading />
 				<main className="data-grid">
 					<Current />

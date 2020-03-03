@@ -148,7 +148,13 @@ export const Icon = (props) => {
 	// get svg icon from object
 	const iconType = iconSet[iconCode];
 
-	return <img src={"/weather-icons/" + iconType.svg + ".svg" } alt={iconType.description} className={props.className} />
+	//return <img src={"/weather-icons/" + iconType.svg + ".svg" } alt={iconType.description} className={props.className} />
+
+	return (
+		<svg className={"svg-icon icon-"+ iconType.svg +" "+props.className} shape-rendering="geometricPrecision" role="presentation">
+			<use xlinkHref={"#icon-" + iconType.svg}></use>
+    	</svg>
+	)
 }
 
 export default Icon

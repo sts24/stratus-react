@@ -38,9 +38,9 @@
 
 .forecast-icon {
 	display: inline-block;
-	vertical-align: middle;
-	width: auto;
-	height: 1em;
+	vertical-align: top;
+	width: 2em;
+	height: 1.5em;
 	margin-right: 1ch;
 }
 
@@ -53,6 +53,7 @@
 	grid-area: desc;
 	font-size: 1em;
 	font-style: italic;
+	line-height: 1.5;
 	margin: 0;
 }
 
@@ -83,6 +84,7 @@
 	font-size: 150%;
 	display: grid;
 	grid-column-gap: 1rem;
+	align-items: start;
 	grid-template-columns: minmax(auto,100px) 1fr;
 	grid-template-areas: 
 		'icon desc'
