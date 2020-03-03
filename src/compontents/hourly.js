@@ -1,6 +1,7 @@
 import React from "react";
 import { Store, getTime } from '../Store';
 import Loading from "./loading";
+import Icon from "./icon";
 
 export default function Hourly() {
 
@@ -19,7 +20,10 @@ export default function Hourly() {
 						return (
 							<li className={`hourly-item ${daytimeClass}`} key={item.startTime} >
 								<time>{getTime(item.startTime)}</time>
-								<div className="hourly-desc">{item.shortForecast}</div>
+								<div className="hourly-desc">
+									<Icon type={item.shortForecast} className="forecast-icon" />
+									{item.shortForecast}
+								</div>
 								<div className="hourly-temp">{item.temperature}&#8457;</div>
 								<div className="hourly-wind">{item.windSpeed} {item.windDirection}</div>
 							</li>

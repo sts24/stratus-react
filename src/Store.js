@@ -4,6 +4,7 @@ export const Store = React.createContext();
 
 const initialState = {
 	coords: "",
+	currentLocCoords: "",
 	hourly: {},
 	weather: {},
 	forecast: {},
@@ -21,6 +22,8 @@ function reducer(state, action) {
 			return { ...state, message: action.payload }
 		case 'SET_COORDS':
 			return { ...state, coords: action.payload }
+		case 'SET_CURRENT_COORDS':
+			return { ...state, currentLocCoords: action.payload }
 		case 'SET_WEATHER':
 			return { ...state, weather: action.payload }
 		case 'SET_FORECAST':

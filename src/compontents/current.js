@@ -2,6 +2,7 @@ import React from "react";
 import { Store } from '../Store';
 import Loading from "./loading";
 import Alert from "./alert";
+import Icon from "./icon";
 
 export const Current = () => {
 
@@ -14,6 +15,8 @@ export const Current = () => {
 
 			{ Object.entries(state.hourly).length > 0 ?
 				<figure className="current-conditions">
+					<Icon type={currentCond.shortForecast} className="current-icon" />
+
 					<div className="forecast-day">{currentCond.name}</div>
 					<div className="forecast-desc">{currentCond.shortForecast}</div>
 					<div className="forecast-temp">{currentCond.temperature}&#8457;</div>

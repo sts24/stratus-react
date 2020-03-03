@@ -64,6 +64,11 @@ export const GetData = async (dispatch, coords) => {
 					payload: "Getting location."
 				});
 
+				dispatch({
+					type: 'SET_CURRENT_COORDS',
+					payload: newCoords
+				});
+
 				resolve(newCoords);
 			}, () => {
 				reject("Please enable location in your browser.");

@@ -18,8 +18,7 @@ const Heading = () => {
 	const [recentSearches, setRecentSearch] = React.useState([]);
 
 	// get data from browser's localstorage of recent searches
-	const getSavedSearches = (e) => {
-		e.preventDefault();
+	const getSavedSearches = () => {
 		if(window.localStorage.length > 0){
 			let savedSearches = [];
 			Object.keys(window.localStorage).forEach((key, index) => {
@@ -106,10 +105,31 @@ const Heading = () => {
 		setRecentSearch(updatedRecentSearches);
 	}
 
+	// on search focus
+	const inputActive = (e) => {
+		e.preventDefault();
+
+		getSavedSearches();
+
+		setSearchResult({
+			...searchResults,
+			active: true
+		});
+	}
+
+	// const inputInactive = (e) => {
+	// 	// e.preventDefault();
+
+	// 	// setSearchResult({
+	// 	// 	...searchResults,
+	// 	// 	active: false
+	// 	// });
+	// }
+
 
 	function SearchListItem(props){
 		return (
-			<li>
+			<li aria-selected="false" id={props.index} role="option" tabIndex="-1">
 				<button className="search-select" data-coords={props.item.coords} onClick={selectResult}>{props.item.name}</button>
 				{props.children}
 			</li>
@@ -120,17 +140,25 @@ const Heading = () => {
 	if (Object.entries(state.weather).length > 0) {
 		const loc = state.weather.relativeLocation.properties;
 
+		// const currentLoc = {
+		// 	name: "Current Location",
+		// 	coords: state.currentLocCoords
+		// }
+
 		return (
 			<header className="app-header">
 				<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
-				<input type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={getSavedSearches} />
+				<input aria-owns="search-results-list" type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={inputActive} />
 
-				<ul className="search-results">
+				
+				<ul className="search-results" id="search-results-list" role="listbox" aria-expanded="false">
+
+					{/* <SearchListItem key="current-loc" item={currentLoc} /> */}
 					
 					{ recentSearches.length > 0 &&
 						recentSearches.map((item, index) => {
 							return (
-								<SearchListItem key={'recent-'+index} item={item}>
+								<SearchListItem key={'recent-'+index} item={item} index={index}>
 									<button className="search-clear" data-index={index} data-coords={item.coords} onClick={removeSavedSearch}>𝘅</button>
 								</SearchListItem>
 							)
@@ -144,10 +172,11 @@ const Heading = () => {
 								coords: item.geometry.lat+','+item.geometry.lng
 							}
 
-							return <SearchListItem key={'result-'+index} item={formattedResult} />
+							return <SearchListItem key={'result-'+index} item={formattedResult} index={index} />
 						})
 					}
 				</ul>
+				
 				
 
 			</header>
