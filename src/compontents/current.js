@@ -15,7 +15,7 @@ export const Current = () => {
 
 			{ Object.entries(state.hourly).length > 0 ?
 				<figure className="current-conditions">
-					<Icon type={currentCond.shortForecast} className="current-icon" />
+					<Icon type={currentCond.icon} className="current-icon" />
 
 					<div className="forecast-day">{currentCond.name}</div>
 					<div className="forecast-desc">{currentCond.shortForecast}</div>

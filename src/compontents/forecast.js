@@ -21,7 +21,7 @@ export const Forecast = () => {
 							<li className={`forecast-item ${daytimeClass}`} key={item.startTime}>
 								<div className="forecast-day">{item.name}</div>
 								<div className="forecast-desc">
-									<Icon type={item.shortForecast} className="forecast-icon" />
+									<Icon type={item.icon} className="forecast-icon" />
 									{item.shortForecast}
 								</div>
 								<div className="forecast-temp">{item.temperature}&#8457;</div>

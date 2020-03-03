@@ -21,7 +21,7 @@ export default function Hourly() {
 							<li className={`hourly-item ${daytimeClass}`} key={item.startTime} >
 								<time>{getTime(item.startTime)}</time>
 								<div className="hourly-desc">
-									<Icon type={item.shortForecast} className="forecast-icon" />
+									<Icon type={item.icon} className="forecast-icon" />
 									{item.shortForecast}
 								</div>
 								<div className="hourly-temp">{item.temperature}&#8457;</div>
