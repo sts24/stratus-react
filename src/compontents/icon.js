@@ -16,7 +16,7 @@ const iconSet = {
 	},
 	"bkn": {
 		"description": "Mostly cloudy",
-		"svg": "Cloud-Fog-Sun"
+		"svg": "Cloud-Fog-Sun-Alt"
 	},
 	"ovc": {
 		"description": "Overcast",
