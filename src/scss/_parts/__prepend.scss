@@ -1,13 +1,16 @@
 :root {
+    --tangerine: #df552a;
+    --seafoam: #00bda3;
+
 	--bg: white;
 	--text: black;
-	--highlight: #df552a;
+	--highlight: var(--tangerine);
 	--subtle-accent: rgba(0,0,0,0.1);
 
 	@media (prefers-color-scheme: dark){
 		--bg: #28374a;
 		--text: white;
-		--highlight: #00bda3;
+		--highlight: var(--seafoam);
 		--subtle-accent: rgba(0,0,0,0.25);
 	}
 }
