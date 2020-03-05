@@ -17,3 +17,20 @@
 		display: block;
 	}
 }
+
+.alert-box-button {
+	appearance: none;
+	border: 0;
+	color: white;
+	background: var(--highlight);
+	line-height: 1;
+	text-transform: uppercase;
+	padding: 0.5rem;
+	font-weight: bold;
+	font-size: 0.875em;
+	cursor: pointer;
+
+	&:hover {
+		background: var(--seafoam);
+	}
+}
