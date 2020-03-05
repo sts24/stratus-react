@@ -9,7 +9,7 @@ export default function Hourly() {
 	const hourlyCond = Object.entries(state.hourly).length > 0 ? state.hourly.periods : [];
 
 	return (
-		<div className="grid-col grid-hourly">
+		<section className="grid-col grid-hourly">
 			<h2>Next 12 Hours</h2>
 
 			{ Object.entries(state.hourly).length > 0 ?
@@ -34,7 +34,7 @@ export default function Hourly() {
 			:
 				<Loading text="Hourly Forecast" />
 			}
-		</div>
+		</section>
 	)
 	
 

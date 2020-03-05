@@ -12,7 +12,7 @@ body {
 	background: var(--bg);
 	color: var(--text);
 
-	@media (min-width: 768px){
+	@media (min-width: 1200px){
 		padding: 0 3rem;
 	}
 }
@@ -20,8 +20,6 @@ body {
 #root {
 	display: grid;
 	grid-template-rows: auto 1fr;
-	
-	
 
 	@media (min-width: 768px){
 		height: 100vh;
@@ -40,7 +38,7 @@ body {
 	justify-content: space-between;
 	box-sizing: border-box;
 	
-	@media (min-width: 768px){
+	@media (min-width: 1024px){
 		overflow: hidden;
 		grid-template-columns: 20% 30% 1fr;
 	}

@@ -8,7 +8,7 @@ export const Forecast = () => {
 	const { state } = React.useContext(Store);
 
 	return (
-		<div className="grid-col grid-forecast">
+		<section className="grid-col grid-forecast">
 			<h2>Extended Forecast</h2>
 
 			{ Object.entries(state.forecast).length > 0 ?
@@ -36,7 +36,7 @@ export const Forecast = () => {
 			:
 				<Loading text="Extended Forecast" />
 				}
-		</div>
+		</section>
 	)
 	
 

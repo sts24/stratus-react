@@ -31,6 +31,9 @@ export default function App() {
 					<Hourly />
 					<Forecast />
 				</main>
+				<aside className="credits-section">
+					<p>Stratus is <a href="https://smithscott.net/portfolio/stratus/">created by Scott Smith</a></p>
+				</aside>
 			</React.Fragment>
 		);
 	} else {

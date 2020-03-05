@@ -10,7 +10,7 @@ export const Current = () => {
 	const currentCond = Object.entries(state.hourly).length > 0 ? state.hourly.periods[0] : [];
 
 	return (
-		<div className="grid-col grid-current">
+		<section className="grid-col grid-current">
 			<h2>Currently</h2>
 
 			{ Object.entries(state.hourly).length > 0 ?
@@ -31,7 +31,7 @@ export const Current = () => {
 					return <Alert key={index} alert={alert} />
 				})
 			: null }
-		</div>
+		</section>
 	)
 	
 
