@@ -42,15 +42,14 @@ const Heading = () => {
 				"active": true
 			});
 
-			setTimeout(() => {
-				axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + searchValue + '&key=3d5358bd0ebe4d35a5ebf97a2322d2c7&language=en&pretty=0&roadinfo=0&countrycode=us&no_annotations=1&limit=12')
-					.then(response => {
-						setSearchResult({ 
-							"results": response.data.results,
-							"active": false
-						});
+			axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + searchValue + '&key=3d5358bd0ebe4d35a5ebf97a2322d2c7&language=en&pretty=0&roadinfo=0&countrycode=us&no_annotations=1&limit=12')
+				.then(response => {
+					setSearchResult({ 
+						"results": response.data.results,
+						"active": false
 					});
-			}, 1000);
+				});
+		
 		}
 		else if(e.target.value === ''){
 			setSearchResult({ 
