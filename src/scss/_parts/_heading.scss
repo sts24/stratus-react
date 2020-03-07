@@ -60,47 +60,57 @@ h2 {
 }
 
 
+
+
+
 .search-results {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+	background-color: white;
 	max-width: 100%;
 	position: absolute;
 	z-index: 1000;
 	overflow: scroll;
 	max-height: 80vh;
+	border: 0.5rem solid var(--text);
+	padding: 1rem 0 0 0;
+	
+	> header {
+		padding: 0 1rem 0 1rem;
+		font-size: 0.875rem;
+	}
+
+	@media (min-width: 768px){
+		max-width: 50%;
+	}
+}
+
+.search-results-list {
+	list-style: none;
+	margin: 0 0 1rem 0;
+	padding: 0;
 
 	> li {
 		background: var(--bg);
 		padding: 0;
 		margin: 0;
-		border: 0.5rem solid var(--text);
 		border-bottom: 0;
 		display: flex;
-
-		&:last-child {
-			border-bottom: 0.5rem solid var(--text);
-		}
-	}
-
-	@media (min-width: 768px){
-		max-height: 50vh;
-		max-width: 50%;
 	}
 }
+
 
 .search-select {
 	background: none;
 	border: 0;
 	display: block;
 	width: 100%;
-	padding: 0.5rem 1rem;
+	padding: 0 1rem;
 	text-align: left;
 	color: var(--text);
 	cursor: pointer;
 
-	font-size: 1.25em;
+	font-size: 1em;
 	font-weight: bold;
+	line-height: 1.5;
 	
 	&:hover, &:focus {
 		background-color: var(--highlight);
@@ -114,7 +124,8 @@ h2 {
 	display: block;
 	color: var(--text);
 	cursor: pointer;
-	font-size: 2em;
+	font-size: 1em;
+	line-height: 1.5;
 
 	&:hover, &:focus {
 		background: var(--highlight);
