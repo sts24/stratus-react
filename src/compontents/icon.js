@@ -151,7 +151,7 @@ export const Icon = (props) => {
 	//return <img src={"/weather-icons/" + iconType.svg + ".svg" } alt={iconType.description} className={props.className} />
 
 	return (
-		<svg className={"svg-icon icon-"+ iconType.svg +" "+props.className} shape-rendering="geometricPrecision" role="presentation">
+		<svg className={"svg-icon icon-"+ iconType.svg +" "+props.className} shapeRendering="geometricPrecision" role="presentation">
 			<use xlinkHref={"#icon-" + iconType.svg}></use>
     	</svg>
 	)
