@@ -11,7 +11,8 @@ const Heading = () => {
 	// local state for search results
 	const [searchResults, setSearchResult] = React.useState({
 		"results": [],
-		"active": false
+		"active": false,
+		"resultsListToggle": false
 	});
 
 	// local state for recent searches
@@ -80,8 +81,9 @@ const Heading = () => {
 		}));
 
 		setSearchResult({ 
-			"results": [],
-			"active": false
+			results: [],
+			active: false,
+			resultsListToogle: true
 		});
 	}
 
@@ -112,18 +114,21 @@ const Heading = () => {
 
 		setSearchResult({
 			...searchResults,
-			active: true
+			active: true,
+			resultsListToggle: true
 		});
 	}
 
-	// const inputInactive = (e) => {
-	// 	// e.preventDefault();
+	const inputInactive = (e) => {
+		console.log('inactive');
+		// e.preventDefault();
 
-	// 	// setSearchResult({
-	// 	// 	...searchResults,
-	// 	// 	active: false
-	// 	// });
-	// }
+		setSearchResult({
+			...searchResults,
+			active: false,
+			resultsListToggle: false
+		});
+	}
 
 
 	function SearchListItem(props){
@@ -147,34 +152,46 @@ const Heading = () => {
 		return (
 			<header className="app-header">
 				<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
-				<input aria-owns="search-results-list" type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={inputActive} />
+				<input aria-owns="search-results-list" type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={inputActive} onBlur={inputInactive} />
 
 				
-				<ul className="search-results" id="search-results-list" role="listbox" aria-expanded="false">
+				{ searchResults.resultsListToggle === true &&
+				<div className="search-results" aria-expanded="false">
 
 					{/* <SearchListItem key="current-loc" item={currentLoc} /> */}
 					
 					{ recentSearches.length > 0 &&
-						recentSearches.map((item, index) => {
-							return (
-								<SearchListItem key={'recent-'+index} item={item} index={index}>
-									<button className="search-clear" data-index={index} data-coords={item.coords} onClick={removeSavedSearch}>𝘅</button>
-								</SearchListItem>
-							)
-						})
+						<>
+						<header>Recent Searches</header>
+						<ul className="search-results-list" role="listbox">
+							{ recentSearches.map((item, index) => {
+								return (
+									<SearchListItem key={'recent-'+index} item={item} index={index}>
+										<button className="search-clear" data-index={index} data-coords={item.coords} onClick={removeSavedSearch}>𝘅</button>
+									</SearchListItem>
+								)
+							}) }
+						</ul>
+						</>
 					}
 
 					{ searchResults.results.length > 0 &&
-						searchResults.results.map((item,index) => {
-							let formattedResult = {
-								name: item.formatted,
-								coords: item.geometry.lat+','+item.geometry.lng
-							}
+						<>
+						<header>Search Results</header>
+						<ul className="search-results-list" role="listbox">
+							{ searchResults.results.map((item,index) => {
+								let formattedResult = {
+									name: item.formatted,
+									coords: item.geometry.lat+','+item.geometry.lng
+								}
 
-							return <SearchListItem key={'result-'+index} item={formattedResult} index={index} />
-						})
+								return <SearchListItem key={'result-'+index} item={formattedResult} index={index} />
+							}) }
+						</ul>
+						</>
 					}
-				</ul>
+				</div>
+				}
 				
 				
 

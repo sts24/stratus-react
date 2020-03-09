@@ -1,0 +1,18 @@
+.current-conditions {
+	margin: 0;
+	font-size: 150%;
+	display: grid;
+	grid-column-gap: 1rem;
+	align-items: start;
+	grid-template-columns: minmax(auto,100px) 1fr;
+	grid-template-areas: 
+		'icon desc'
+		'icon temp'
+		'icon wind';
+}
+
+.current-icon {
+	grid-area: icon;
+	width: 100%;
+	height: auto;
+}

@@ -7,6 +7,12 @@ export const Forecast = () => {
 
 	const { state } = React.useContext(Store);
 
+	const showMore = (e) => {
+		e.preventDefault();
+		const forecastIndex = e.target.dataset.index;
+		document.querySelector('#forecast-'+forecastIndex).classList.toggle('forecast-extra-open');	
+	}
+
 	return (
 		<section className="grid-col grid-forecast">
 			<h2>Extended Forecast</h2>
@@ -25,8 +31,12 @@ export const Forecast = () => {
 									{item.shortForecast}
 								</div>
 								<div className="forecast-temp">{item.temperature}&#8457;</div>
-								<div className="forecast-wind">{item.windSpeed} {item.windDirection}</div>
-								<div className="forecast-full-desc">{item.detailedForecast}</div>
+								<button className="forecast-extra-toggle" data-index={index} onClick={showMore}>More Info</button>
+
+								<aside className="forecast-extra" id={'forecast-' + index}>
+									<div className="forecast-wind"><strong>Wind</strong> {item.windSpeed} {item.windDirection}</div>
+									<div className="forecast-full-desc"><strong>Forecast Detail</strong> {item.detailedForecast}</div>
+								</aside>
 							</li>
 						)
 
@@ -35,7 +45,7 @@ export const Forecast = () => {
 
 			:
 				<Loading text="Extended Forecast" />
-				}
+			}
 		</section>
 	)
 	
