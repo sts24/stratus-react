@@ -11,7 +11,6 @@ const Heading = () => {
 	// local state for search results
 	const [searchResults, setSearchResult] = React.useState({
 		"results": [],
-		"active": false,
 		"resultsListToggle": false
 	});
 
@@ -39,23 +38,23 @@ const Heading = () => {
 			const searchValue = e.target.value;
 
 			setSearchResult({
-				"results": [],
-				"active": true
+				results: [],
+				resultsListToggle: true
 			});
 
 			axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + searchValue + '&key=3d5358bd0ebe4d35a5ebf97a2322d2c7&language=en&pretty=0&roadinfo=0&countrycode=us&no_annotations=1&limit=12')
 				.then(response => {
 					setSearchResult({ 
-						"results": response.data.results,
-						"active": false
+						results: response.data.results,
+						resultsListToggle: true
 					});
 				});
 		
 		}
 		else if(e.target.value === ''){
 			setSearchResult({ 
-				"results": [],
-				"active": false
+				results: [],
+				resultsListToggle: false
 			});
 		}
 	}
@@ -63,12 +62,10 @@ const Heading = () => {
 
 	// select city and get weather data
 	function selectResult(e) {
-		e.preventDefault();
+		//e.preventDefault();
 
 		const newCoords = e.target.dataset.coords;
 		const newName = e.target.innerText;
-
-		console.log(newCoords);
 
 		dispatch({
 			type: 'SET_COORDS',
@@ -82,7 +79,6 @@ const Heading = () => {
 
 		setSearchResult({ 
 			results: [],
-			active: false,
 			resultsListToogle: true
 		});
 	}
@@ -100,8 +96,6 @@ const Heading = () => {
 			}
 		}
 
-		console.log(updatedRecentSearches);
-
 		localStorage.removeItem(coords);
 		setRecentSearch(updatedRecentSearches);
 	}
@@ -110,31 +104,41 @@ const Heading = () => {
 	const inputActive = (e) => {
 		e.preventDefault();
 
+		document.addEventListener('click', inputInactive);
+
 		getSavedSearches();
 
 		setSearchResult({
 			...searchResults,
-			active: true,
 			resultsListToggle: true
 		});
+
 	}
 
 	const inputInactive = (e) => {
-		console.log('inactive');
-		// e.preventDefault();
+
+		const searchWidget = document.querySelector('.search-widget');
+		let targetElement = e.target;
+
+		do {
+			if(targetElement === searchWidget){
+				return
+			}
+			targetElement = targetElement.parentNode;
+		} while(targetElement);
 
 		setSearchResult({
 			...searchResults,
-			active: false,
 			resultsListToggle: false
 		});
+		
 	}
 
 
 	function SearchListItem(props){
 		return (
-			<li aria-selected="false" id={props.index} role="option" tabIndex="-1">
-				<button className="search-select" data-coords={props.item.coords} onClick={selectResult}>{props.item.name}</button>
+			<li className="search-widget" aria-selected="false" id={props.index} role="option" tabIndex="-1">
+				<button className="search-select search-widget" data-coords={props.item.coords} onClick={selectResult}>{props.item.name}</button>
 				{props.children}
 			</li>
 		)
@@ -144,21 +148,14 @@ const Heading = () => {
 	if (Object.entries(state.weather).length > 0) {
 		const loc = state.weather.relativeLocation.properties;
 
-		// const currentLoc = {
-		// 	name: "Current Location",
-		// 	coords: state.currentLocCoords
-		// }
-
 		return (
 			<header className="app-header">
 				<h1><span>Weather for </span>{loc.city}, {loc.state}</h1>
-				<input aria-owns="search-results-list" type="search" onChange={makeSearch} className="city-search" placeholder="Search" onFocus={inputActive} onBlur={inputInactive} />
+				<input aria-owns="search-results-list" type="search" onChange={makeSearch} className="city-search search-widget" placeholder="Search" onFocus={inputActive} />
 
 				
 				{ searchResults.resultsListToggle === true &&
-				<div className="search-results" aria-expanded="false">
-
-					{/* <SearchListItem key="current-loc" item={currentLoc} /> */}
+				<div className="search-results search-widget" aria-expanded="false">
 					
 					{ recentSearches.length > 0 &&
 						<>
