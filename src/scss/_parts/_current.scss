@@ -2,13 +2,16 @@
 	margin: 0;
 	font-size: 150%;
 	display: grid;
+	grid-gap: 1rem;
 	grid-column-gap: 1rem;
 	align-items: start;
-	grid-template-columns: minmax(auto,100px) 1fr;
-	grid-template-areas: 
-		'icon desc'
-		'icon temp'
-		'icon wind';
+	justify-items: center;
+	grid-template-columns: 1fr;
+	grid-template-areas:
+		'icon'
+		'temp'
+		'desc'
+		'wind';
 }
 
 .current-icon {

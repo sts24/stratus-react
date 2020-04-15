@@ -1,18 +1,23 @@
 :root {
     --tangerine: #df552a;
+    --tangerine-alt: #faeae5;
+
     --seafoam: #00bda3;
+    --seafoam-alt: #305d57;
 
 	--bg: white;
     --text: black;
     --text-light: rgba(0,0,0,0.5);
-	--highlight: var(--tangerine);
+    --highlight: var(--tangerine);
+    --highlight-alt: var(--tangerine-alt);
 	--subtle-accent: rgba(0,0,0,0.1);
 
 	@media (prefers-color-scheme: dark){
 		--bg: #28374a;
         --text: white;
         --text-light: rgba(255,255,255,0.8);
-		--highlight: var(--seafoam);
+        --highlight: var(--seafoam);
+        --highlight-alt: var(--seafoam-alt);
 		--subtle-accent: rgba(0,0,0,0.25);
 	}
 }
